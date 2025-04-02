@@ -1,0 +1,35 @@
+name: build
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  schedule:
+    - cron: '30 13 * * *'
+
+jobs:
+  build:
+
+    runs-on: macos-14
+
+    steps:
+      - uses: actions/checkout@v3
+      - run: brew install make ninja
+      - run: make tools
+      - run: make clean
+      - run: make
+      - run: zip -r PathOfBuilding-PoE2.zip PathOfBuilding-PoE2.app
+
+      # Based on https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#setting-an-output-parameter
+      - id: get-version
+        run: |
+          version=$(sed -n 's/^.*number="\([0-9.]*\)".*$/\1/p' PathOfBuilding-PoE2/manifest.xml)
+          echo "VERSION=$version" >> "$GITHUB_OUTPUT"
+      - name: Upload MacOS artifacts into Github
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "PathOfBuilding-PoE2.zip"
+          token: ${{ secrets.GITHUB_TOKEN }}
+          allowUpdates: true
+          tag: v${{ steps.get-version.outputs.VERSION }}

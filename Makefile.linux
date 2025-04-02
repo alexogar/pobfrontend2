@@ -1,0 +1,54 @@
+DIR := ${CURDIR}
+SHELL = /bin/bash
+
+all: frontend pob 
+	pushd build; \
+	ninja; \
+	popd; \
+	mv build/PathOfBuilding-PoE2 PathOfBuilding/src; \
+	echo 'Finished'
+
+pob: load_pob luacurl frontend
+	pushd PathOfBuilding-PoE2; \
+	unzip runtime-win32.zip lua/xml.lua lua/base64.lua lua/sha1.lua; \
+	mv lua/*.lua src/; \
+	rmdir lua; \
+	cp ../lcurl.so src/; \
+	popd
+
+frontend: 
+	meson -Dbuildtype=release build
+
+load_pob:
+	git clone --depth 1 https://github.com/PathOfBuildingCommunity/PathOfBuilding-PoE2.git; \
+	pushd PathOfBuilding-PoE2; \
+	rm -rf .git; \
+	popd
+
+luacurl:
+	git clone --depth 1 https://github.com/Lua-cURL/Lua-cURLv3.git; \
+	pushd Lua-cURLv3; \
+	sed -i -e's/\?= lua/\?= luajit/' Makefile; \
+	make; \
+	mv lcurl.so ../lcurl.so; \
+	popd
+
+tools: qt lua zlib meson
+
+qt:
+	sudo apt -y install qt5-default; \
+	sudo apt -y install qtcreator
+
+lua:
+	sudo apt -y install luajit; \
+	sudo apt -y install libluajit-5.1-dev
+
+zlib:
+	sudo apt -y install zlib1g; \
+	sudo apt -y install zlib1g-dev
+
+meson:
+	sudo apt -y install meson
+
+clean:
+	rm -rf PathOfBuilding-PoE2 Lua-cURLv3 lcurl.so build
