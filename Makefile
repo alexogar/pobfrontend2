@@ -33,7 +33,7 @@ frontend:
 
 # We checkout the latest version.
 load_pob:
-	git clone https://github.com/PathOfBuildingCommunity/PathOfBuilding-PoE2-v2.git PathOfBuilding-PoE2; \
+	git clone https://github.com/PathOfBuildingCommunity/PathOfBuilding-PoE2.git PathOfBuilding-PoE2; \
 	pushd PathOfBuilding-PoE2; \
 	git fetch; \
 	popd
