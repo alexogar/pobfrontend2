@@ -27,9 +27,10 @@ sed -i '' 's/if grantedEffect.support/if grantedEffect ~= nil and grantedEffect.
 sed -i '' 's/if not grantedEffect.hidden/if grantedEffect ~= nil and not grantedEffect.hidden/' src/Modules/ModParser.lua
 
 # Run remaining setup
-unzip runtime-win32.zip lua/xml.lua lua/base64.lua lua/sha1.lua
+unzip runtime-win32.zip lua/xml.lua lua/base64.lua lua/sha1.lua lua/dkjson.lua
 mv lua/*.lua .
 rmdir lua
 cp ../lcurl.so .
+cp ../lua-utf8.so .
 mv src/* .
 rmdir src
