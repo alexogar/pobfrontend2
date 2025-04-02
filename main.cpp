@@ -497,8 +497,6 @@ static int l_imgHandleLoad(lua_State* L)
     imgHandle->img = new QImage();
     imgHandle->img->load(fullFileName);
     imgHandle->img->setText("fname", fullFileName);
-    //imgHandle->hnd = new QOpenGLTexture(img);
-    //pobwindow->renderer->RegisterShader(fullFileName, flags);
     return 0;
 }
 
@@ -662,9 +660,9 @@ static int l_DrawImage(lua_State* L)
     if ( !lua_isnil(L, 1) ) {
         auto imgHandle = (imgHandle_s*)lua_touserdata(L, 1);
         if (imgHandle->hnd->get() == nullptr) {
-            imgHandle->hnd->reset(new QOpenGLTexture(*(imgHandle->img)));
-            if (!(*imgHandle->hnd)->isCreated()) {
-                //std::cout << "BROKEN TEXTURE " << imgHandle->img->text("fname").toStdString() << std::endl;
+            if (imgHandle->img && !imgHandle->img->isNull()) {
+                imgHandle->hnd->reset(new QOpenGLTexture(*(imgHandle->img)));
+            } else {
                 *imgHandle->hnd = pobwindow->white;
             }
         }
