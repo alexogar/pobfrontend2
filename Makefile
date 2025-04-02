@@ -1,5 +1,5 @@
 DIR := ${CURDIR}
-export PATH := /opt/homebrew/opt/qt@5/bin:$(PATH)
+export PATH := /usr/local/opt/qt@5/bin:/opt/homebrew/opt/qt@5/bin:$(PATH)
 # Some users on old versions of MacOS 10.13 run into the error:
 # dyld: cannot load 'PathOfBuilding' (load command 0x80000034 is unknown)
 #
