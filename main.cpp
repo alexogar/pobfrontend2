@@ -1751,9 +1751,9 @@ int main(int argc, char **argv)
         + basePath
         + "/runtime/lua/?.lua\"";
     luaL_dostring(L, extraPathCommand.c_str());
-
+    int result;
     try {
-        int result = luaL_dofile(L, "Launch.lua");
+        result = luaL_dofile(L, "Launch.lua");
         if (result != 0) {
             throw std::runtime_error(lua_tostring(L, -1));
         }
