@@ -22,6 +22,7 @@ Before starting, you need to install Homebrew for x86_64.
 5. Edit Homebrew to fetch packages for Ventura (10.13), since the Qt package
    for Sonoma (10.14) breaks compatibility with libc++: see [this error](https://www.pathofexile.com/forum/view-thread/3009944/page/34#:~:text=__ZTVNSt3__13pmr25monotonic_buffer_resourceE)
 
+
 ```sh
 vim /usr/local/Homebrew/Library/Homebrew/brew.sh
 # Edit the file to comment out the version and hardcode it:
