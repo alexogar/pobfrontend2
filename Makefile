@@ -29,7 +29,7 @@ pob: load_pob luacurl frontend
 	popd
 
 frontend:
-	arch=aarch64 meson -Dbuildtype=release --prefix=${DIR}/PathOfBuilding-PoE2.app --bindir=Contents/MacOS build
+	arch=x86_64 meson -Dbuildtype=release --prefix=${DIR}/PathOfBuilding-PoE2.app --bindir=Contents/MacOS build
 
 # We checkout the latest version.
 load_pob:
