@@ -1145,7 +1145,7 @@ static int l_IsKeyDown(lua_State* L)
         } else if (k == "ALT") {
             result = keys & Qt::AltModifier;
         } else {
-            std::cout << "UNKNOWN ISKEYDOWN: " << k.toStdString() << std::endl;
+            // std::cout << "UNKNOWN ISKEYDOWN: " << k.toStdString() << std::endl;
         }
     }
     lua_pushboolean(L, result);
@@ -1752,9 +1752,14 @@ int main(int argc, char **argv)
         + "/runtime/lua/?.lua\"";
     luaL_dostring(L, extraPathCommand.c_str());
 
-    int result = luaL_dofile(L, "Launch.lua");
-    if (result != 0) {
-        lua_error(L);
+    try {
+        int result = luaL_dofile(L, "Launch.lua");
+        if (result != 0) {
+            throw std::runtime_error(lua_tostring(L, -1));
+        }
+    } catch (const std::exception& e) {
+        std::cerr << "Exception: " << e.what() << std::endl;
+        return -1;
     }
 
     pushCallback("OnInit");
