@@ -711,9 +711,9 @@ static int l_DrawImageQuad(lua_State* L)
     if ( !lua_isnil(L, 1) ) {
         auto imgHandle = (imgHandle_s*)lua_touserdata(L, 1);
         if ((*imgHandle->hnd).get() == nullptr) {
-            (*imgHandle->hnd).reset(new QOpenGLTexture(*(imgHandle->img)));
-            if (!(*imgHandle->hnd)->isCreated()) {
-                // std::cout << "BROKEN TEXTURE" << imgHandle->img->text("fname").toStdString() << std::endl;
+            if (imgHandle->img && !imgHandle->img->isNull()) {
+                imgHandle->hnd->reset(new QOpenGLTexture(*(imgHandle->img)));
+            } else {
                 *imgHandle->hnd = pobwindow->white;
             }
         }
@@ -1755,7 +1755,8 @@ int main(int argc, char **argv)
     try {
         result = luaL_dofile(L, "Launch.lua");
         if (result != 0) {
-            throw std::runtime_error(lua_tostring(L, -1));
+            std::cerr << "Error loading Launch.lua: " << lua_tostring(L, -1) << std::endl;
+            return -1;
         }
     } catch (const std::exception& e) {
         std::cerr << "Exception: " << e.what() << std::endl;
@@ -1765,7 +1766,8 @@ int main(int argc, char **argv)
     pushCallback("OnInit");
     result = lua_pcall(L, 1, 0, 0);
     if (result != 0) {
-        lua_error(L);
+        std::cerr << "Error in OnInit callback: " << lua_tostring(L, -1) << std::endl;
+        return -1;
     }
     pobwindow->resize(800, 600);
     pobwindow->show();
