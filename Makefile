@@ -1,5 +1,5 @@
 DIR := ${CURDIR}
-export PATH := /usr/local/opt/qt@5/bin:$(PATH)
+export PATH := /opt/homebrew/opt/qt@5/bin:$(PATH)
 # Some users on old versions of MacOS 10.13 run into the error:
 # dyld: cannot load 'PathOfBuilding' (load command 0x80000034 is unknown)
 #
@@ -42,7 +42,7 @@ luacurl:
 	git clone --depth 1 https://github.com/Lua-cURL/Lua-cURLv3.git; \
 	bash editLuaCurlMakefile.sh; \
     pushd Lua-cURLv3; \
-	make; \
+	make LDFLAGS="-L../libs" CFLAGS="-I../libs"; \
 	mv lcurl.so ../lcurl.so; \
 	popd
 
