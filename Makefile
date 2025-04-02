@@ -41,7 +41,7 @@ load_pob:
 luacurl:
 	git clone --depth 1 https://github.com/Lua-cURL/Lua-cURLv3.git; \
 	bash editLuaCurlMakefile.sh; \
-    pushd Lua-cURLv3; \
+	pushd Lua-cURLv3; \
 	make LDFLAGS="-L../libs" CFLAGS="-I../libs"; \
 	mv lcurl.so ../lcurl.so; \
 	popd
